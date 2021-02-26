@@ -3,6 +3,10 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+@app.route('/')
+def root():
+    return 'curl -X POST -H "Content-Type: text/plain" --data "$(cat /proc/cpuinfo)" https://archspec-api.vercel.app/$(uname -m)'
+
 @app.route('/<arch>', methods=['GET', 'POST'])
 def host(arch):
     """Detects the host micro-architecture and returns it"""
