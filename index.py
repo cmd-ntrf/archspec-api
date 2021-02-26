@@ -3,10 +3,12 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-@app.route('/<arch>', methods=['POST'])
+@app.route('/<arch>', methods=['GET', 'POST'])
 def host(arch):
     """Detects the host micro-architecture and returns it"""
     error = None
+    if request.method == 'GET':
+        return 'curl -X POST -H "Content-Type: text/plain" --data "$(cat /proc/cpuinfo)" https://archspec-api.vercel.app/$(uname -m)'
     if request.method == 'POST':
         info = {}
         lines = request.data.decode('utf-8').split('\n')
